@@ -5,489 +5,228 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipe Finder</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .search-container {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        #search-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        #search-button {
+            padding: 10px 15px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+         #filter-container {
+            display: flex;
+            margin-bottom: 20px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #filter-container select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+         #sort-container select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .recipe-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .recipe-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .recipe-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .recipe-card h3 {
+            padding: 10px;
+            margin: 0;
+            font-size: 1.2em;
+        }
+         .recipe-card .ingredients-list{
+            padding: 10px;
+            margin: 0;
+            font-size: 0.9em;
+        }
+        .recipe-card .instructions {
+            padding: 10px;
+            margin: 0;
+        }
+        .recipe-card ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .recipe-card li {
+            padding: 5px 0;
+        }
+        .recipe-actions {
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+        }
+        .recipe-actions button {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .recipe-actions button:hover {
+            background-color: #e0e0e0;
+        }
+        @media (max-width: 768px) {
+            .search-container {
+                flex-direction: column;
+            }
+            #search-button {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+            #filter-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            #filter-container select {
+               margin-bottom: 10px;
+           }
+           #sort-container select{
+                margin-top: 10px;
+           }
+        }
+    </style>
 </head>
 <body>
-    <header>
+    <div class="container">
         <h1>Recipe Finder</h1>
         <div class="search-container">
-            <input type="text" id="search-input" placeholder="Search recipes...">
+            <input type="text" id="search-input" placeholder="Enter ingredients...">
             <button id="search-button">Search</button>
         </div>
-    </header>
-    <main>
-        <aside class="filters">
-            <h2>Filters</h2>
-            <div class="filter-group">
-                <label for="dietary-filter">Dietary</label>
-                <select id="dietary-filter">
-                    <option value="">All</option>
-                    <option value="vegan">Vegan</option>
-                    <option value="vegetarian">Vegetarian</option>
-                    <option value="gluten-free">Gluten-Free</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label for="sort-filter">Sort By</label>
-                <select id="sort-filter">
-                  <option value="relevance">Relevance</option>
-                  <option value="popularity">Popularity</option>
-                  <option value="cookTime">Cook Time</option>
-                </select>
-            </div>
-             <div class="filter-group">
-               <label for="cuisine-filter">Cuisine</label>
-               <select id="cuisine-filter">
-                    <option value="">All</option>
-                    <option value="american">American</option>
-                    <option value="italian">Italian</option>
-                    <option value="indian">Indian</option>
-                    <option value="mexican">Mexican</option>
-                </select>
-            </div>
-        </aside>
-        <section id="recipe-list" class="recipe-list">
-          <!-- Recipes will be loaded here dynamically -->
-        </section>
-        <section id="recipe-details" class="recipe-details hidden">
-            <button id="close-details-button" class="close-button">&times;</button>
-            <div id="recipe-content"></div>
-            <div class="recipe-actions">
-              <button id="save-recipe-button">Save Recipe</button>
-              <button id="print-recipe-button">Print Recipe</button>
-            </div>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2024 Recipe Finder</p>
-    </footer>
-    <script src="script.js"></script>
+        <div id="filter-container">
+            <select id="dietary-filter">
+                <option value="">All Diets</option>
+                <option value="vegan">Vegan</option>
+                <option value="vegetarian">Vegetarian</option>
+                <option value="gluten-free">Gluten-Free</option>
+             </select>
+             <select id="sort-filter">
+                <option value="popularity">Sort by Popularity</option>
+                <option value="time">Sort by Cooking Time</option>
+            </select>
+         </div>
+        <div class="recipe-list" id="recipe-list">
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('search-button').addEventListener('click', searchRecipes);
+        const recipeListDiv = document.getElementById('recipe-list');
+        document.getElementById('dietary-filter').addEventListener('change', searchRecipes);
+        document.getElementById('sort-filter').addEventListener('change', searchRecipes);
+
+        function searchRecipes() {
+             const searchTerm = document.getElementById('search-input').value;
+             const dietaryFilter = document.getElementById('dietary-filter').value;
+             const sortFilter = document.getElementById('sort-filter').value;
+             
+            recipeListDiv.innerHTML = '<p>Searching recipes....</p>';
+           
+            fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=YOUR_API_KEY_HERE&query=${searchTerm}&diet=${dietaryFilter}&sort=${sortFilter}`)
+            .then(response => response.json())
+            .then(data => {
+                 if (data.results && data.results.length > 0) {
+                     recipeListDiv.innerHTML = '';
+                    displayRecipes(data.results);
+                } else {
+                     recipeListDiv.innerHTML = '<p>No recipes found.</p>';
+                 }
+            })
+            .catch(error => {
+                console.error('Error fetching recipes:', error);
+                recipeListDiv.innerHTML = '<p>Failed to load recipes. Please try again later.</p>';
+            });
+        }
+
+        function displayRecipes(recipes) {
+            recipeListDiv.innerHTML = '';
+            recipes.forEach(recipe => {
+                const recipeCard = document.createElement('div');
+                recipeCard.classList.add('recipe-card');
+                
+                const ingredients = recipe.extendedIngredients.map(item => item.original).join(", ");
+                const instructions = recipe.analyzedInstructions && recipe.analyzedInstructions[0]?.steps
+                    ? recipe.analyzedInstructions[0].steps.map(step => `<li>${step.step}</li>`).join('')
+                    : 'No instructions available';
+                
+                recipeCard.innerHTML = `
+                    <img src="${recipe.image}" alt="${recipe.title}">
+                    <h3>${recipe.title}</h3>
+                     <p class="ingredients-list">Ingredients: ${ingredients}</p>
+                    <div class="instructions">
+                        <h4>Instructions:</h4>
+                        <ul>${instructions}</ul>
+                    </div>
+                     <div class="recipe-actions">
+                        <button onclick="saveRecipe('${recipe.id}')">Save</button>
+                        <button onclick="printRecipe('${recipe.id}')">Print</button>
+                    </div>
+                `;
+                recipeListDiv.appendChild(recipeCard);
+            });
+        }
+
+        function saveRecipe(recipeId) {
+            alert(`Recipe ${recipeId} saved!`);
+            // Implement the save recipe functionality
+        }
+
+        function printRecipe(recipeId) {
+              alert(`Recipe ${recipeId} is being printed!`);
+            // Implement the print recipe functionality
+        }
+    </script>
 </body>
 </html>
-
-
-
-css
-/* Reset some default styles for better consistency */
-body, h1, h2, h3, p, ul, li, button, input, select {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #f4f4f4;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-/* Header Styles */
-header {
-    background-color: #3498db;
-    color: #fff;
-    text-align: center;
-    padding: 1rem 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-}
-
-header h1 {
-    margin: 0;
-    flex: 1;
-}
-
-.search-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.search-container input {
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.search-container button {
-    padding: 0.75rem 1rem;
-    background-color: #fff;
-    color: #3498db;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.search-container button:hover {
-    background-color: #eee;
-}
-
-/* Main Content Styles */
-main {
-    display: flex;
-    flex: 1;
-    padding: 20px;
-}
-
-aside.filters {
-    width: 250px;
-    padding: 15px;
-    background-color: #f9f9f9;
-    border-right: 1px solid #ddd;
-}
-
-.filter-group {
-    margin-bottom: 20px;
-}
-
-.filter-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.filter-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.recipe-list {
-    flex: 1;
-    padding: 15px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
-
-.recipe-card {
-  background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
-}
-
-.recipe-card:hover {
-    transform: scale(1.03);
-}
-
-.recipe-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.recipe-card h3 {
-  font-size: 1.2em;
-    padding: 10px;
-    text-align: center;
-    margin:0;
-}
-.recipe-card h3:hover {
-    text-decoration: underline;
-}
-
-.recipe-details {
-  position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.recipe-details.hidden{
-    display: none;
-}
-
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 2rem;
-    cursor: pointer;
-    border: none;
-    background: none;
-    color: #fff;
-}
-.close-button:hover {
-  color: #ddd;
-}
-
-#recipe-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    max-width: 700px;
-    overflow-y: auto;
-    max-height: 80%;
-    position: relative;
-    padding: 30px;
-}
-
-#recipe-content h2 {
-    font-size: 2em;
-    margin-bottom: 15px;
-}
-
-#recipe-content img {
-    width: 100%;
-    max-height: 300px;
-    object-fit: cover;
-    margin-bottom: 15px;
-}
-#recipe-content ul{
-    list-style: none;
-    margin-bottom: 15px;
-    padding-left: 0;
-}
-
-#recipe-content li{
-    padding: 8px 0;
-    border-bottom: 1px solid #eee;
-}
-
-#recipe-content ol {
-    margin-bottom: 15px;
-    padding-left: 20px;
-}
-
-#recipe-content ol li {
-  padding: 8px 0;
-}
-
-.recipe-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 20px;
-}
-
-.recipe-actions button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    background: #3498db;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-.recipe-actions button:hover {
-  background-color: #2980b9;
-}
-
-
-/* Footer Styles */
-footer {
-    text-align: center;
-    padding: 1rem 0;
-    background-color: #333;
-    color: #fff;
-    margin-top: auto;
-}
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  main {
-    flex-direction: column;
-  }
-
-  aside.filters {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid #ddd;
-  }
-
-  .recipe-list {
-    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
-    }
-  .search-container {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 5px;
-    }
-}
-
-
-
-javascript
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('search-input');
-    const searchButton = document.getElementById('search-button');
-    const recipeList = document.getElementById('recipe-list');
-    const dietaryFilter = document.getElementById('dietary-filter');
-    const sortFilter = document.getElementById('sort-filter');
-    const cuisineFilter = document.getElementById('cuisine-filter');
-    const recipeDetailsModal = document.getElementById('recipe-details');
-    const recipeContent = document.getElementById('recipe-content');
-    const closeDetailsButton = document.getElementById('close-details-button');
-    const saveRecipeButton = document.getElementById('save-recipe-button');
-    const printRecipeButton = document.getElementById('print-recipe-button');
-
-    let recipes = [];
-    let selectedRecipe = null;
-    let savedRecipes = JSON.parse(localStorage.getItem('savedRecipes')) || [];
-
-    const API_URL = 'https://api.spoonacular.com/recipes/complexSearch';
-    const API_KEY = 'YOUR_API_KEY'; // Replace with your actual API key
-
-    function getApiUrl(query, dietary, sort, cuisine) {
-      const params = new URLSearchParams({
-            apiKey: API_KEY,
-            query: query,
-            diet: dietary,
-            sort: sort,
-             cuisine: cuisine,
-            addRecipeInformation: true,
-            number: 10,
-        });
-
-       return `${API_URL}?${params.toString()}`
-    }
-
-    async function fetchRecipes(query, dietary, sort, cuisine) {
-        const url = getApiUrl(query, dietary, sort, cuisine);
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            recipes = data.results;
-            displayRecipes(recipes);
-        } catch (error) {
-            console.error('Failed to fetch recipes:', error);
-            recipeList.innerHTML = '<p>Failed to fetch recipes. Please try again later.</p>';
-        }
-    }
-
-  function displayRecipes(recipes) {
-        recipeList.innerHTML = '';
-        if (recipes.length === 0) {
-            recipeList.innerHTML = '<p>No recipes found. Try another search!</p>';
-            return;
-        }
-
-        recipes.forEach(recipe => {
-            const recipeCard = document.createElement('div');
-            recipeCard.classList.add('recipe-card');
-            recipeCard.innerHTML = `
-                <img src="${recipe.image}" alt="${recipe.title}">
-                <h3>${recipe.title}</h3>
-            `;
-            recipeCard.addEventListener('click', () => displayRecipeDetails(recipe));
-            recipeList.appendChild(recipeCard);
-        });
-    }
-    function displayRecipeDetails(recipe) {
-      selectedRecipe = recipe;
-      recipeContent.innerHTML = `
-              <h2>${recipe.title}</h2>
-              <img src="${recipe.image}" alt="${recipe.title}">
-               <h3>Ingredients</h3>
-               <ul>
-                   ${recipe.extendedIngredients.map(ingredient => `<li>${ingredient.original}</li>`).join('')}
-              </ul>
-              <h3>Instructions</h3>
-                <ol>
-                    ${recipe.analyzedInstructions[0].steps.map(step => `<li>${step.step}</li>`).join('')}
-                </ol>
-          `;
-        recipeDetailsModal.classList.remove('hidden');
-    }
-
-    function closeRecipeDetails() {
-        recipeDetailsModal.classList.add('hidden');
-    }
-
-    function saveRecipe() {
-      if (!selectedRecipe) return;
-      const isSaved = savedRecipes.some(saved => saved.id === selectedRecipe.id);
-      if (isSaved) {
-        savedRecipes = savedRecipes.filter(saved => saved.id !== selectedRecipe.id);
-        saveRecipeButton.textContent = 'Save Recipe';
-        alert('Recipe removed from saved list.');
-      } else {
-         savedRecipes.push(selectedRecipe);
-         saveRecipeButton.textContent = 'Unsave Recipe';
-         alert('Recipe saved!');
-      }
-      localStorage.setItem('savedRecipes', JSON.stringify(savedRecipes));
-      updateSaveButton();
-    }
-
-    function updateSaveButton() {
-      if (!selectedRecipe) return;
-      const isSaved = savedRecipes.some(saved => saved.id === selectedRecipe.id);
-       saveRecipeButton.textContent = isSaved ? 'Unsave Recipe' : 'Save Recipe';
-    }
-
-    function printRecipe() {
-        if (!selectedRecipe) return;
-       const printWindow = window.open('', '_blank');
-       printWindow.document.write(`
-            <html>
-              <head>
-                <title>${selectedRecipe.title}</title>
-              </head>
-              <body>
-               <h1>${selectedRecipe.title}</h1>
-               <img src="${selectedRecipe.image}" alt="${selectedRecipe.title}" style="max-width: 400px; display: block; margin: 20px auto;">
-                 <h3>Ingredients</h3>
-                  <ul>
-                      ${selectedRecipe.extendedIngredients.map(ingredient => `<li>${ingredient.original}</li>`).join('')}
-                  </ul>
-                   <h3>Instructions</h3>
-                    <ol>
-                         ${selectedRecipe.analyzedInstructions[0].steps.map(step => `<li>${step.step}</li>`).join('')}
-                    </ol>
-                </body>
-            </html>
-          `);
-        printWindow.document.close();
-        printWindow.focus();
-        printWindow.print();
-        printWindow.close();
-    }
-
-
-    searchButton.addEventListener('click', () => {
-        const query = searchInput.value.trim();
-        const dietary = dietaryFilter.value;
-        const sort = sortFilter.value;
-        const cuisine = cuisineFilter.value;
-        fetchRecipes(query, dietary, sort, cuisine);
-    });
-
-    closeDetailsButton.addEventListener('click', closeRecipeDetails);
-    saveRecipeButton.addEventListener('click', saveRecipe);
-    printRecipeButton.addEventListener('click', printRecipe);
-  document.addEventListener('click', function(event) {
-    if (event.target === recipeDetailsModal) {
-      closeRecipeDetails();
-    }
-  });
-
-    searchInput.addEventListener('keydown', function(event) {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        searchButton.click();
-      }
-    });
-});
 
 
